@@ -13,13 +13,22 @@
          async: false
      }).responseText;
      var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
-     var chart = new google.visualization.ColumnChart(document.getElementById('daily'));
+     var chart = new google.visualization.ComboChart(document.getElementById('daily'));
      var options = {
          title: '『KING OF PRISM -PRIDE the HERO-』1日の販売座席数',
-         legend: { position: 'none' },
+         series: [
+             {targetAxisIndex: 0, type: 'bars'},
+             {targetAxisIndex: 1, type: 'line'},
+         ],
+         pointSize: 10,
          vAxes: [
-             {},
              {title: '販売座席数'},
+             {
+                 title: '上映回数',
+                 viewWindow: {
+                     min: 0,
+                 },
+             },
          ],
      }
      chart.draw(data, options);
@@ -35,12 +44,19 @@
      var options = {
          title: '『KING OF PRISM -PRIDE the HERO-』週ごとの販売座席数と上映回数',
          series: [
-             {targetAxisIndex: 0},
-             {targetAxisIndex: 1},
+             {targetAxisIndex: 0, type: 'bars'},
+             {targetAxisIndex: 1, type: 'line'},
          ],
+         pointSize: 10,
          vAxes: [
              {title: '販売座席数'},
-             {title: '上映回数'},
+             {
+                 title: '上映回数',
+                 viewWindow: {
+                     max: 2000,
+                     min: 0,
+                 },
+             },
          ],
      }
      chart.draw(data, options);

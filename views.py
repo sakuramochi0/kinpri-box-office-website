@@ -23,9 +23,9 @@ def api(request, endpoint):
         data = [[
             {'id': '_id', 'label': '日付', 'type': 'string'},
             {'id': 'sell', 'label': '販売座席数', 'type': 'number'},
+            {'id': 'show_num', 'label': '上映回数', 'type': 'number'},
             # {'calc': 'stringify', 'sourceColumn': 1,
             #  'type': "string", 'role': "annotation"},
-            # {'id': 'show_num', 'label': '上映回数', 'type': 'number'},
             # {'id': 'theater_num', 'label': '劇場数', 'type': 'number'},
         ]]
         
@@ -34,6 +34,7 @@ def api(request, endpoint):
             row = [
                 i['_id'].strftime('%m/%d({})'.format(get_weekday(i['_id']))),
                 i['sell'],
+                i['show_num'],
             ]
             data.append(row)
     elif endpoint == 'v1/mimorin/weekly.json':
@@ -63,7 +64,7 @@ def api(request, endpoint):
             ]
             data.append(row)
         # additional empty data
-        data.append(['第{}週'.format(week + 2), 0, 0])
+        data.append(['第{}週'.format(week + 2), 0, None])
     else:
         data = []
     return JsonResponse(data, safe=False)
