@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>📈 キンプラ 座席販売数グラフ 📊</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">    
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="google-site-verification" content="XgVpJ5azAN2UwYSHRfKnJIPYVFtsNVnZRzKiLDfebX8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'kinpri_box_offich/default.css' %}">
+        <script src="{% static 'js/google-analytics.js' %}"></script>
+        <!--[if lt IE 9]>
+	        <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	    <![endif]-->
+        <style>
+         h1 {
+             margin: 1em;
+         }
+         #box-office {
+             width: 100%;
+             height: 500px;
+         }
+        </style>
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>
