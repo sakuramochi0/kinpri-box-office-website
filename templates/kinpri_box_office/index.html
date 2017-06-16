@@ -6,8 +6,9 @@
  google.charts.setOnLoadCallback(drawChart);
  
  function drawChart() {
+     // daily chart
      var jsonData = $.ajax({
-         url: "api/v1/box-office.json",
+         url: "api/v1/mimorin/daily.json",
          dataType: "json",
          async: false
      }).responseText;
@@ -15,14 +16,32 @@
      console.log(jsonData);
      
      var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
-     var chart = new google.visualization.ColumnChart(document.getElementById('box-office'));
+     var chart = new google.visualization.ColumnChart(document.getElementById('daily'));
      var options = {
-         title: '『KING OF PRISM -PRIDE the HERO-』販売座席数',
+         title: '『KING OF PRISM -PRIDE the HERO-』1日の販売座席数',
          legend: { position: 'none' },
      }
-
      chart.draw(data, options);
-     // chart.draw(data, {width: 800, height: 400});
+
+     // weekly chart
+     var jsonData = $.ajax({
+         url: "api/v1/mimorin/weekly.json",
+         dataType: "json",
+         async: false
+     }).responseText;
+
+     console.log(jsonData);
+     
+     var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
+     var chart = new google.visualization.ColumnChart(document.getElementById('weekly'));
+     var options = {
+         title: '『KING OF PRISM -PRIDE the HERO-』週ごとの販売座席数と上映回数',
+         series: [
+             {targetAxisIndex: 0},
+             {targetAxisIndex: 1},
+         ],
+     }
+     chart.draw(data, options);
  }
  
 </script>
@@ -35,7 +54,7 @@
         『KING OF PRISM -PRIDE the HERO-』の座席販売数をグラフにしたページです。TOHOシネマズ、109、KINEZO、MOVIX、ユナイテッドシネマの販売数を基にしています。
     </p>
     <p>
-        『プリティーリズム・レディースパーキング！』を見たかったら金を払え！100億！！
+        「『プリティーリズム・レディースパーキング！』を見たかったら金を払え！100億！！」
         <a href="#1"><sup>*1</sup></a> 
     </p>
     <p>
@@ -48,16 +67,19 @@
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
     <div class="cointainer">
-        <div id="box-office"></div>
+        <div id="daily"></div>
+        <div id="weekly"></div>
     </div>
 
     <p>
         データのソース: <a href="http://mimorin2014.blog.fc2.com/">興行収入を見守りたい！</a>さんのデータを使わせてもらっています。
 
-    <footer>
-        <hr>
-        <a name="1"></a>
-        *1 念のため言うと、キンプラの法月仁の台詞のパロディです。
+        <footer>
+            <hr>
+            <p>
+                <a name="1"></a>
+                *1 念のため言うと、キンプラの法月仁の台詞のパロディです。
+            </p>
         
         <p>
             このサービスのソースコードは、
