@@ -12,14 +12,15 @@
          dataType: "json",
          async: false
      }).responseText;
-
-     console.log(jsonData);
-     
      var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
      var chart = new google.visualization.ColumnChart(document.getElementById('daily'));
      var options = {
          title: '『KING OF PRISM -PRIDE the HERO-』1日の販売座席数',
          legend: { position: 'none' },
+         vAxes: [
+             {},
+             {title: '販売座席数'},
+         ],
      }
      chart.draw(data, options);
 
@@ -29,9 +30,6 @@
          dataType: "json",
          async: false
      }).responseText;
-
-     console.log(jsonData);
-     
      var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
      var chart = new google.visualization.ColumnChart(document.getElementById('weekly'));
      var options = {
@@ -39,6 +37,10 @@
          series: [
              {targetAxisIndex: 0},
              {targetAxisIndex: 1},
+         ],
+         vAxes: [
+             {title: '販売座席数'},
+             {title: '上映回数'},
          ],
      }
      chart.draw(data, options);
@@ -71,18 +73,20 @@
         <div id="weekly"></div>
     </div>
 
-    <p>
-        データのソース: <a href="http://mimorin2014.blog.fc2.com/">興行収入を見守りたい！</a>さんのデータを使わせてもらっています。
-
-        <footer>
-            <hr>
-            <p>
-                <a name="1"></a>
-                *1 念のため言うと、キンプラの法月仁の台詞のパロディです。
-            </p>
+    <footer>
+        <hr>
+        <p>
+            <a name="1"></a>
+            *1 キンプラの法月仁さんの台詞のパロディです。
+        </p>
         
         <p>
-            このサービスのソースコードは、
+            データのソース: 
+            <a href="http://mimorin2014.blog.fc2.com/">興行収入を見守りたい！</a>
+            さんのデータを使わせてもらっています。
+        </p>
+        <p>
+            このサービスのソースコードは
             <i class="fa fa-github"></i>
             GitHubで公開しています。
             <a href="https://github.com/sakuramochi0/kinpri-box-office">
