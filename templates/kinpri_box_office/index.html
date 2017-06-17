@@ -62,6 +62,34 @@
          ],
      }
      chart.draw(data, options);
+
+     // korea daily chart
+     var jsonData = $.ajax({
+         url: "api/v1/korea/daily.json",
+         dataType: "json",
+         async: false
+     }).responseText;
+     var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
+     var chart = new google.visualization.ComboChart(document.getElementById('korea'));
+     var options = {
+         series: [
+             {targetAxisIndex: 0, type: 'bars'},
+             {targetAxisIndex: 1, type: 'bars'},
+         ],
+         colors: ['lightblue', 'gold'],
+         pointSize: 20,
+         pointShape: 'star',
+         vAxes: [
+             {title: '販売座席数'},
+             {
+                 title: '興行収入 (ウォン)',
+                 viewWindow: {
+                     min: 0,
+                 },
+             },
+         ],
+     }
+     chart.draw(data, options);
  }
  
 </script>
@@ -100,13 +128,15 @@
     </div>
     <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-    <hr>
-
     <!-- グラフ -->
-    <h3>『KING OF PRISM -PRIDE the HERO-』1日ごと販売座席数と上映回数</h3>
-    <div id="daily"></div>
-    <h3>『KING OF PRISM -PRIDE the HERO-』週ごとの販売座席数と上映回数</h3>
-    <div id="weekly"></div>
+    <h3>1日ごとの販売座席数と上映回数</h3>
+    <div id="daily" class="chart"></div>
+    <h3>週ごとの販売座席数と上映回数</h3>
+    <div id="weekly" class="chart"></div>
+    <h3>韓国での1日ごとの販売座席数と興行収入</h3>
+    <p>10,000ウォン = 約1,000円なので、10で割ると大まかな興行収入がわかります。
+        たとえば、初日は約700万円です。
+    <div id="korea" class="chart"></div>
 
     <!-- フッタ -->
     <footer>
@@ -117,9 +147,19 @@
         </p>
         
         <p>
-            データのソース: 
-            <a href="http://mimorin2014.blog.fc2.com/">興行収入を見守りたい！</a>
-            さんのデータを使わせてもらっています。
+            データのソース:
+            <ul>
+                <li>日本:
+                    <a href="http://mimorin2014.blog.fc2.com/">
+                        興行収入を見守りたい！
+                    </a> さんのデータ
+                </li>
+                <li>韓国:
+                    <a href="https://namu.wiki/w/KING%20OF%20PRISM%20PRIDE%20the%20HERO">
+                        韓国映画振興委員会のデータをまとめたキンプラWiki
+                    </a>
+                </li>
+            </ul>
         </p>
         <p>
             このサービスのソースコードは

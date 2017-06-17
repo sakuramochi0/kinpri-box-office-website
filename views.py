@@ -50,21 +50,41 @@ def api(request, endpoint):
         publish_date = parse('6/10')
         weeks = (today - publish_date).days // 7 + 1
         for week in range(weeks):
-            start = publish_date + datetime.timedelta(days=week*7)
+            start = publish_date + datetime.timedelta(days=week * 7)
             end = start + datetime.timedelta(days=6)
-            i = db.mimorin_daily.aggregate([{
+            cursor = db.mimorin_daily.aggregate([{
+                '$match': {'_id': {'$gte': start, '$lte': end}},
+            }, {
                 '$group': {'_id': '第{}週'.format(week + 1),
                            'sell': {'$sum': '$sell'},
                            'show_num': {'$sum': '$show_num'}},
-            }]).next()
+            }])
+            if cursor.alive:
+                i = cursor.next()
+                row = [
+                    i['_id'],
+                    i['sell'],
+                    i['show_num'],
+                ]
+                data.append(row)
+        # additional empty data
+        data.append(['第{}週'.format(len(data)), 0, None])
+    elif endpoint == 'v1/korea/daily.json':
+        # make header
+        data = [[
+            {'id': '_id', 'label': '日付', 'type': 'string'},
+            {'id': 'sell', 'label': '販売座席数', 'type': 'number'},
+            {'id': 'box_office', 'label': '興行収入', 'type': 'number'},
+        ]]
+
+        # add rows
+        for i in db.korea.find().sort('_id'):
             row = [
-                i['_id'],
+                i['_id'].strftime('%m/%d({})'.format(get_weekday(i['_id']))),
                 i['sell'],
-                i['show_num'],
+                i['box_office'],
             ]
             data.append(row)
-        # additional empty data
-        data.append(['第{}週'.format(week + 2), 0, None])
     else:
         data = []
     return JsonResponse(data, safe=False)
