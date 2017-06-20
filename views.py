@@ -31,12 +31,17 @@ def api(request, endpoint):
         
         # add rows
         for i in db.mimorin_daily.find().sort('_id'):
+            date = i['_id']
             row = [
-                i['_id'].strftime('%m/%d({})'.format(get_weekday(i['_id']))),
+                date.strftime('%-m/%-d({})'.format(get_weekday(i['_id']))),
                 i['sell'],
                 i['show_num'],
             ]
             data.append(row)
+        # additional empty data
+        date = date + datetime.timedelta(days=1)
+        date = date.strftime('%-m/%-d({})'.format(get_weekday(date)))
+        data.append([date, 0, None])
     elif endpoint == 'v1/mimorin/weekly.json':
         # make header
         data = [[
@@ -52,10 +57,17 @@ def api(request, endpoint):
         for week in range(weeks):
             start = publish_date + datetime.timedelta(days=week * 7)
             end = start + datetime.timedelta(days=6)
+            if week == weeks - 1: # latest week
+                haxes_label = '第{}週\n{}〜'.format(week + 1,
+                                                      start.strftime('%-m/%-d'))
+            else:
+                haxes_label = '第{}週\n{}〜{}'.format(week + 1,
+                                                      start.strftime('%-m/%-d'),
+                                                      end.strftime('%-m/%-d'))
             cursor = db.mimorin_daily.aggregate([{
                 '$match': {'_id': {'$gte': start, '$lte': end}},
             }, {
-                '$group': {'_id': '第{}週'.format(week + 1),
+                '$group': {'_id': haxes_label,
                            'sell': {'$sum': '$sell'},
                            'show_num': {'$sum': '$show_num'}},
             }])
@@ -80,11 +92,15 @@ def api(request, endpoint):
         # add rows
         for i in db.korea.find().sort('_id'):
             row = [
-                i['_id'].strftime('%m/%d({})'.format(get_weekday(i['_id']))),
+                i['_id'].strftime('%-m/%-d({})'.format(get_weekday(i['_id']))),
                 i['sell'],
                 i['box_office'],
             ]
             data.append(row)
+        # additional empty data
+        date = i['_id'] + datetime.timedelta(days=1)
+        date = date.strftime('%-m/%-d({})'.format(get_weekday(date)))
+        data.append([date, 0, None])
     else:
         data = []
     return JsonResponse(data, safe=False)
