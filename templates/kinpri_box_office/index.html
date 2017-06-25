@@ -8,12 +8,12 @@
  function drawChart() {
      // daily chart
      var jsonData = $.ajax({
-         url: "api/v1/mimorin/daily.json",
+         url: "api/v2/kinpri2/daily.json",
          dataType: "json",
          async: false
      }).responseText;
      var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
-     var chart = new google.visualization.ComboChart(document.getElementById('daily'));
+     var chart = new google.visualization.ComboChart(document.getElementById('daily-chart'));
      var options = {
          series: [
              {targetAxisIndex: 0, type: 'bars'},
@@ -36,12 +36,12 @@
 
      // weekly chart
      var jsonData = $.ajax({
-         url: "api/v1/mimorin/weekly.json",
+         url: "api/v2/kinpri2/weekly.json",
          dataType: "json",
          async: false
      }).responseText;
      var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
-     var chart = new google.visualization.ColumnChart(document.getElementById('weekly'));
+     var chart = new google.visualization.ColumnChart(document.getElementById('weekly-chart'));
      var options = {
          series: [
              {targetAxisIndex: 0, type: 'bars'},
@@ -63,18 +63,102 @@
      }
      chart.draw(data, options);
 
-     // korea daily chart
+     // kinpri1 daily chart
      var jsonData = $.ajax({
-         url: "api/v1/korea/daily.json",
+         url: "api/v2/kinpri/daily.json",
          dataType: "json",
          async: false
      }).responseText;
      var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
-     var chart = new google.visualization.ComboChart(document.getElementById('korea'));
+     var chart = new google.visualization.ComboChart(document.getElementById('kinpri-daily-chart'));
+     var options = {
+         series: [
+             {targetAxisIndex: 0, type: 'bars'},
+             {targetAxisIndex: 1, type: 'line'},
+         ],
+         colors: ['lightblue', 'gold'],
+         pointSize: 12,
+         pointShape: 'star',
+         vAxes: [
+             {title: '販売座席数'},
+             {
+                 title: '上映回数',
+                 viewWindow: {
+                     min: 0,
+                 },
+             },
+         ],
+     }
+     chart.draw(data, options);
+
+     // kinpri1 weekly chart
+     var jsonData = $.ajax({
+         url: "api/v2/kinpri/weekly.json",
+         dataType: "json",
+         async: false
+     }).responseText;
+     var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
+     var chart = new google.visualization.ColumnChart(document.getElementById('kinpri-weekly-chart'));
+     var options = {
+         series: [
+             {targetAxisIndex: 0, type: 'bars'},
+             {targetAxisIndex: 1, type: 'line'},
+         ],
+         colors: ['lightblue', 'gold'],
+         pointSize: 20,
+         pointShape: 'star',
+         vAxes: [
+             {title: '販売座席数'},
+             {
+                 title: '上映回数',
+                 viewWindow: {
+                     min: 0,
+                 },
+             },
+         ],
+     }
+     chart.draw(data, options);
+
+     // korea daily chart
+     var jsonData = $.ajax({
+         url: "api/v2/korea-kinpri2/daily.json",
+         dataType: "json",
+         async: false
+     }).responseText;
+     var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
+     var chart = new google.visualization.ComboChart(document.getElementById('korea-daily-chart'));
      var options = {
          series: [
              {targetAxisIndex: 0, type: 'bars'},
              {targetAxisIndex: 1, type: 'bars'},
+         ],
+         colors: ['lightblue', 'gold'],
+         pointSize: 20,
+         pointShape: 'star',
+         vAxes: [
+             {title: '販売座席数'},
+             {
+                 title: '興行収入 (ウォン)',
+                 viewWindow: {
+                     min: 0,
+                 },
+             },
+         ],
+     }
+     chart.draw(data, options);
+
+     // korea weekly chart
+     var jsonData = $.ajax({
+         url: "api/v2/korea-kinpri2/weekly.json",
+         dataType: "json",
+         async: false
+     }).responseText;
+     var data = new google.visualization.arrayToDataTable(JSON.parse(jsonData));
+     var chart = new google.visualization.ColumnChart(document.getElementById('korea-weekly-chart'));
+     var options = {
+         series: [
+             {targetAxisIndex: 0, type: 'bars'},
+             {targetAxisIndex: 1, type: 'line'},
          ],
          colors: ['lightblue', 'gold'],
          pointSize: 20,
@@ -96,11 +180,11 @@
 {% endblock %}
 {% block body %}
 <div class="container">
-    <h1>📈 キンプラ 座席販売数グラフ 📊</h1>
+    <h1>📈 キンプラ 販売座席数グラフ 📊</h1>
 
     <!-- イントロ -->
     <p>
-        『KING OF PRISM -PRIDE the HERO-』の座席販売数と上映回数をグラフにしたページです。TOHOシネマズ、109、KINEZO、MOVIX、ユナイテッドシネマの販売数を基にしています。約80%の映画館 (44/56館) をカバーしています。
+        『KING OF PRISM -PRIDE the HERO-』の販売座席数と上映回数をグラフにしたページです。TOHOシネマズ、109、KINEZO、MOVIX、ユナイテッドシネマの販売数を基にしています。約80%の映画館 (44/56館) をカバーしています。
     </p>
     <p>
         「『プリティーリズム・レディースパーキング！』を見たかったら金を払え！100億！！」
@@ -110,7 +194,7 @@
         何かあれば、<a href="https://twitter.com/skrmch_rhythpri"><i class="fa fa-twitter"></i>さくらもち (@skrmch_rhythpri)</a> までお知らせください。
     </p>
     <p>
-        2017/06/21: グラフのスクリーンショットをツイートする Twitter の bot を作りました。<a href="https://twitter.com/knpr_box_office"><i class="fa fa-twitter"></i>キンプラ座席販売数お知らせbot (@knpr_box_office)</a>
+        2017/06/21: グラフのスクリーンショットをツイートする Twitter の bot を作りました。<a href="https://twitter.com/knpr_box_office"><i class="fa fa-twitter"></i>キンプラ販売座席数お知らせbot (@knpr_box_office)</a>
     </p>
 
     <!-- ツイートボタン -->
@@ -132,14 +216,38 @@
     <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
     <!-- グラフ -->
-    <h3>キンプラの1日ごとの販売座席数と上映回数</h3>
-    <div id="daily" class="chart"></div>
-    <h3>キンプラの週ごとの販売座席数と上映回数</h3>
-    <div id="weekly" class="chart"></div>
-    <h3>キンプラの韓国での1日ごとの販売座席数と興行収入</h3>
+    <a name="daily" href="#daily">
+        <h3>キンプラの1日ごとの販売座席数と上映回数</h3>
+    </a>
+    <div id="daily-chart" class="chart"></div>
+
+    <a name="weekly" href="#weekly">
+        <h3>キンプラの週ごとの販売座席数と上映回数</h3>
+    </a>
+    <div id="weekly-chart" class="chart"></div>
+
+    <a name="kinpri-daily" href="#kinpri-daily">
+        <h3>キンプリの1日ごとの販売座席数と上映回数</h3>
+    </a>
+    <p>注意: 最後の方はデータが無いので日付が飛び飛びになっています。</p>
+    <div id="kinpri-daily-chart" class="chart"></div>
+
+    <a name="kinpri-weekly" href="#kinpri-weekly">
+        <h3>キンプリの週ごとの販売座席数と上映回数</h3>
+    </a>
+    <div id="kinpri-weekly-chart" class="chart"></div>
+
+    <a name="korea-daily" href="#korea-daily">
+        <h3>韓国キンプラの1日ごとの販売座席数と興行収入</h3>
+    </a>
     <p>10,000ウォン = 約1,000円なので、10で割ると大まかな興行収入がわかります。
-        たとえば、初日は約700万円です。
-    <div id="korea" class="chart"></div>
+        たとえば、初日は約700万円です。</p>
+    <div id="korea-daily-chart" class="chart"></div>
+
+    <a name="korea-weekly" href="#korea-weekly">
+        <h3>韓国キンプラの週ごとの販売座席数と興行収入</h3>
+    </a>
+    <div id="korea-weekly-chart" class="chart"></div>
 
     <!-- フッタ -->
     <footer>
@@ -167,19 +275,34 @@
         <p>
             上のグラフのデータを取得する API のエンドポイント:
             <ul>
-                <li>1日ごと:
-                    <a href="api/v1/mimorin/daily.json">
-                        https://skrm.ch/prettyrhythm/kinpri-box-office/api/v1/mimorin/daily.json
+                <li>キンプラ1日ごと:
+                    <a href="api/v2/kinpri2/daily.json">
+                        https://skrm.ch/prettyrhythm/kinpri-box-office/api/v2/kinpri2/daily.json
                     </a>
                 </li>
-                <li>週別:
-                    <a href="api/v1/mimorin/weekly.json">
-                        https://skrm.ch/prettyrhythm/kinpri-box-office/api/v1/mimorin/weekly.json
+                <li>キンプラ週別:
+                    <a href="api/v2/kinpri2/weekly.json">
+                        https://skrm.ch/prettyrhythm/kinpri-box-office/api/v2/kinpri2/weekly.json
                     </a>
                 </li>
-                <li>韓国の1日ごと:
-                    <a href="api/v1/korea/daily.json">
-                        https://skrm.ch/prettyrhythm/kinpri-box-office/api/v1/korea/daily.json
+                <li>キンプリ1日ごと:
+                    <a href="api/v2/kinpri/daily.json">
+                        https://skrm.ch/prettyrhythm/kinpri-box-office/api/v2/kinpri/daily.json
+                    </a>
+                </li>
+                <li>キンプリ週別:
+                    <a href="api/v2/kinpri/weekly.json">
+                        https://skrm.ch/prettyrhythm/kinpri-box-office/api/v2/kinpri/weekly.json
+                    </a>
+                </li>
+                <li>韓国のキンプラ1日ごと:
+                    <a href="api/v2/korea-kinpri2/daily.json">
+                        https://skrm.ch/prettyrhythm/kinpri-box-office/api/v2/korea-kinpri2/daily.json
+                    </a>
+                </li>
+                <li>韓国のキンプラ週別:
+                    <a href="api/v2/korea-kinpri2/weekly.json">
+                        https://skrm.ch/prettyrhythm/kinpri-box-office/api/v2/korea-kinpri2/weekly.json
                     </a>
                 </li>
             </ul>
@@ -193,7 +316,7 @@
             </a>
             /
             <a href="https://github.com/sakuramochi0/kinpri-box-office-website">
-                website
+p                website
             </a>
             /
             <a href="https://github.com/sakuramochi0/twitter-kinpri-box-office">
